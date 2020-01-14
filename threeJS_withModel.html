@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>threeJS</title>
+</head>
+<body>
+	<canvas id="Canvas"></canvas>
+	<script src="three.js-dev/build/three.js"></script>
+	<script src="OBJLoader.js"></script>
+	<script>
+
+		var renderer = new THREE.WebGLRenderer({canvas: document.getElementById('Canvas'), antialias: true});
+		renderer.setClearColor(0x3333333);
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+
+		var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 2000);
+
+		var scene = new THREE.Scene();
+
+		var lightOne = new THREE.AmbientLight(0xffff, 0.5);
+		scene.add(lightOne);
+
+		var lightTwo = new THREE.PointLight(0xffff, 0.5);
+		scene.add(lightTwo);
+
+		var loader = new THREE.OBJLoader();
+		loader.load(
+			'models/robot.obj',
+			function(object){
+				object.traverse(function(node){
+					if(node instanceof THREE.Mesh){
+						node.castShadow = true;
+						node.receiveShadow = true;
+					}
+				});
+
+				scene.add(object);
+				object.position.set(0, 0, -50);
+				object.rotation.y = 28;
+			},
+			function(xhr){
+				console.log((xhr.loaded/ xhr.total*100)+ '% loaded');
+			}
+		);
+
+		requestAnimationFrame(render);
+		
+		function render(){
+
+			renderer.render(scene, camera);
+			requestAnimationFrame(render);
+		}
+
+	</script>
+</body>
+</html>

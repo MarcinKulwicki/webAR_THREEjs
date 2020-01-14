@@ -24,20 +24,43 @@
 
 		scene.add(pyramidmesh);
 
+		//Materials
+		var boxmaterial = new THREE.MeshNormalMaterial({
+			color: 0xff0000,
+			transparent: true,
+			opacity: 1
+		});
+
+		var planematerial = new THREE.MeshPhongMaterial({
+			color: 0xF3FFE2,
+			specular: 0xff0000,
+			shininess: 50
+		});
+
+		var circlematerial = new THREE.MeshStandardMaterial({
+			color: 0x0098877,
+			roughness: 90.0,
+			metalness: 0.2
+		});
+
+		var spherematerial = new THREE.LineBasicMaterial({
+			color: 0x888888
+		});
+
 		var boxgeometry = new THREE.BoxGeometry(1,1,1);
-		var boxmaterial = new THREE.MeshBasicMaterial();
+		// var boxmaterial = new THREE.MeshBasicMaterial();
 		var boxmesh = new THREE.Mesh(boxgeometry, boxmaterial);
 		boxmesh.position.set(-0.9, 0, -6);
 		scene.add(boxmesh);
 
 		var spheregeometry = new THREE.SphereGeometry(0.5);
-		var spherematerial = new THREE.MeshBasicMaterial({wireframe: true, color: 0x000000});
-		var spheremesh = new THREE.Mesh(spheregeometry, spherematerial);
+		// var spherematerial = new THREE.MeshBasicMaterial({wireframe: true, color: 0x000000});
+		var spheremesh = new THREE.Line(spheregeometry, spherematerial);
 		spheremesh.position.set(0.9, 0, -6);
 		scene.add(spheremesh);
 
 		var circlegeometry = new THREE.CircleBufferGeometry(0.5);
-		var circlematerial = new THREE.MeshBasicMaterial({color: 0x000000});
+		// var circlematerial = new THREE.MeshBasicMaterial({color: 0x000000});
 		var circlemesh = new THREE.Mesh(circlegeometry, circlematerial);
 		circlemesh.position.set(2,0,-6);
 		circlemesh.rotation.set(0,0.5,0);
@@ -58,8 +81,8 @@
 		scene.add(paramesh);
 
 		var planegeometry = new THREE.PlaneGeometry(10, 10);
-		var planeematerial = new THREE.MeshBasicMaterial();
-		var planemesh = new THREE.Mesh(planegeometry, planeematerial);
+		// var planematerial = new THREE.MeshBasicMaterial();
+		var planemesh = new THREE.Mesh(planegeometry, planematerial);
 		planemesh.position.set(0, -20, -100);
 		scene.add(planemesh);
 

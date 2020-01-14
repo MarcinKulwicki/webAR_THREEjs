@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>threeJSshaders</title>
+</head>
+<body>
+<canvas id="Canvas"></canvas>
+<script src="three.js-dev/build/three.js"></script>
+<script>
+	var renderer = new THREE.WebGLRenderer({canvas: document.getElementById('Canvas'), antialias: true});
+		renderer.setClearColor(0x3333333);
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+
+		//PERSPECTIVE CAMERA
+		var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 20000);
+		camera.position.z = 500;
+
+		//Orthographic Camera
+		// var camera = new THREE.OrthographicCamera(-300, 300, 200, -200, 0.1, 2000);
+
+		var scene = new THREE.Scene();
+
+		//CAMERA HELPER
+		// var secondCamera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 20000);
+		// var cameraHelper = new THREE.CameraHelper(secondCamera);
+		// scene.add(cameraHelper);
+
+		var conegeometry = new THREE.CylinderGeometry(100, 200, 100, 500);
+		var conematerial = new THREE.MeshLambertMaterial();
+		var conemesh = new THREE.Mesh(conegeometry, conematerial);
+		conemesh.position.set(-150, -50, -500);
+		conemesh.rotation.x = -100;
+		scene.add(conemesh);
+
+		var cubegeometry = new THREE.CubeGeometry(90, 100, 90, 200);
+		var cubematerial = new THREE.MeshLambertMaterial();
+		var cubemesh = new THREE.Mesh(cubegeometry, cubematerial);
+		cubemesh.position.set(200, -50, -500);
+		cubemesh.rotation.x = -100;
+		scene.add(cubemesh);
+
+		var planeGeometry = new THREE.PlaneGeometry(900, 500, 300, 900);
+		var planeMaterial = new THREE.MeshPhongMaterial({color: 0x333333});
+		var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+		planeMesh.position.set(50, -70, -500);
+		planeMesh.rotation.set(-290, 0 ,0);
+		scene.add(planeMesh);
+
+		//AMBIENT LIGHT
+		// var lightOne = new THREE.AmbientLight(0xfffff, 0.5);
+		// lightOne.position.z = 300;
+
+		//POINT LIGHT
+		// var lightOne = new THREE.PointLight(0xfffff, 0.5);
+		//POINT LIGHT HELPER
+		// var lightHelper = new THREE.PointLightHelper(lightOne, 50);
+		// scene.add(lightHelper);
+		
+		//DIRECTIONAL LIGHT
+		var lightOne = new THREE.DirectionalLight(0xffff, 0.5, 1000);
+		lightOne.target = conemesh;
+		//DIRECTIONAL LIGHT HELPER
+		var lightHelper = new THREE.DirectionalLightHelper(lightOne, 50);
+		scene.add(lightHelper);
+
+		//SPOT LIGHT
+		// var lightOne = new THREE.SpotLight(0xfffff, 0.5, 1000);
+		// lightOne.target = conemesh;
+
+		//HEMISPHERE LIGHT
+		// var lightOne = new THREE.HemisphereLight(0xfffff, 0x0808dd, 1);
+
+		//SHADOW CASTING
+		// renderer.shadowMap.enable = true;
+		// renderer.shadowMap.type = THREE.PCFShadowMap;
+
+		// var lightOne = new THREE.SpotLight(0xfffff, 2.0, 3000);
+		// lightOne.position.x = 50;
+		// lightOne.target = conemesh;
+		// lightOne.castShadow = true;
+		// lightOne.shadow = new THREE.LightShadow(new THREE.PerspectiveCamera(100, 1, 500, 1000));
+		// lightOne.shadow.bias = 0.0001;
+		// lightOne.shadow.mapSize.width = 2048 * 2;
+		// lightOne.shadow.mapSize.height = 2048 * 2;
+
+		scene.add(lightOne);
+
+		conemesh.castShadow = true;
+		cubemesh.castShadow = true;
+		planeMesh.castShadow = true;
+
+		requestAnimationFrame(render);
+
+		var delta = 0;
+		function render(){
+			lightHelper.update();
+			delta += 0.01;
+
+			camera.lookAt(lightOne.position);
+			camera.position.x = Math.sin(delta) * 2000;
+			camera.position.z = Math.cos(delta) * 2000;	
+			renderer.render(scene, camera);
+			requestAnimationFrame(render);
+		}
+</script>
+</body>
+</html>
